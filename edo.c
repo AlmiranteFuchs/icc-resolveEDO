@@ -40,17 +40,9 @@ Tridiag *genTridiag(EDo *edo) {
 void prnEDOsl(EDo *edoeq) {
   int n = edoeq->n, i, j;
   real_t x, b, d, di, ds, rx;
-  x = 0.0;
-  b = 0.0;
-  d = 0.0;
-  di = 0.0;
-  ds = 0.0;
-  rx = 0.0;
-
-  real_t h = (edoeq->b - edoeq->a) / (n - 1);
+  real_t h = (edoeq->b - edoeq->a) / (n + 1);
 
   printf("%d\n", n);
-  printf("%lf\n", h);
 
   for (i = 0; i < n; ++i) {
     x = edoeq->a + (i + 1) * h;
@@ -85,16 +77,37 @@ void prnEDOsl(EDo *edoeq) {
   }
 }
 
+void prnTridiagSystem(Tridiag *sl) {
+  int i, j;
+  for (i = 0; i < sl->n; i++) {
+    for (j = 0; j < sl->n; j++) {
+      if (j == i)
+        printf(FORMAT, sl->D[i]);
+      else if (j == i - 1 && i > 0)
+        printf(FORMAT, sl->Di[i - 1]);
+      else if (j == i + 1 && i < sl->n - 1)
+        printf(FORMAT, sl->Ds[i]);
+      else
+        printf(FORMAT, 0.0);
+    }
+    printf(" | ");
+    printf(FORMAT, sl->B[i]);
+    printf("\n");
+  }
+  printf("\n");
+}
+
 EDo *genEDo(int n, real_t a, real_t b, real_t ya, real_t yb, real_t p, real_t q,
             real_t r1, real_t r2, real_t r3, real_t r4) {
 
   EDo *edo = (EDo *)malloc(sizeof(EDo));
+
   if (edo == NULL) {
     fprintf(stderr, "Erro ao alocar memória para EDo.\n");
     exit(EXIT_FAILURE);
   }
 
-  edo->n = n; // número de pontos internos
+  edo->n = n;
   edo->a = a;
   edo->b = b;
   edo->ya = ya;
@@ -107,4 +120,27 @@ EDo *genEDo(int n, real_t a, real_t b, real_t ya, real_t yb, real_t p, real_t q,
   edo->r4 = r4;
 
   return edo;
+}
+
+void fatoraLU(Tridiag *sl) {
+  // Fatora matriz tridiagonal A em LU, com L armazenada em Di (subdiagonal)
+  // e U armazenada em D (diagonal) e Ds (superdiagonal)
+  for (int i = 0; i < sl->n - 1; i++) {
+    real_t m = sl->Di[i] / sl->D[i];
+
+    sl->Di[i] = m;
+    sl->D[i + 1] -= m * sl->Ds[i];
+  }
+}
+
+void resolveLU(Tridiag *sl, real_t *x) {
+
+  for (int i = 0; i < sl->n - 1; i++) {
+    sl->B[i + 1] -= sl->B[i] * sl->Di[i];
+  }
+
+  x[sl->n - 1] = (sl->B[sl->n - 1]) / sl->D[sl->n - 1];
+  for (int i = sl->n - 2; i >= 0; --i) {
+    x[i] = (sl->B[i] - sl->Ds[i] * x[i + 1]) / sl->D[i];
+  }
 }
