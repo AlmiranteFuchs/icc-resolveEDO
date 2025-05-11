@@ -5,6 +5,23 @@
 #include "edo.h"
 #include "utils.h"
 
+void refazRX(Tridiag *sl, EDo *edo) {
+  real_t x, rx;
+  int n = edo->n;
+
+  real_t h = (edo->b - edo->a) / (n + 1);
+
+  for (int i = 0; i < n; ++i) {
+    x = edo->a + (i + 1) * h;
+    rx = edo->r1 * x + edo->r2 * x * x + edo->r3 * cos(x) + edo->r4 * exp(x);
+
+    sl->B[i] = h * h * rx;
+  }
+
+  sl->B[0] -= edo->ya * (1 - h * edo->p / 2.0);
+  sl->B[n - 1] -= edo->yb * (1 + h * edo->p / 2.0);
+}
+
 Tridiag *genTridiag(EDo *edo) {
   Tridiag *sl;
   real_t x, rx;
@@ -135,10 +152,12 @@ void fatoraLU(Tridiag *sl) {
 
 void resolveLU(Tridiag *sl, real_t *x) {
 
+  // Substituição Direta: resolver Ly=b
   for (int i = 0; i < sl->n - 1; i++) {
     sl->B[i + 1] -= sl->B[i] * sl->Di[i];
   }
 
+  // Substituição Retroativa: resolver Ux=yU
   x[sl->n - 1] = (sl->B[sl->n - 1]) / sl->D[sl->n - 1];
   for (int i = sl->n - 2; i >= 0; --i) {
     x[i] = (sl->B[i] - sl->Ds[i] * x[i + 1]) / sl->D[i];

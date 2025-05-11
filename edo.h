@@ -29,6 +29,6 @@ EDo *genEDo(int n, real_t a, real_t b, real_t ya, real_t yb, real_t p, real_t q,
 
 void fatoraLU(Tridiag *sl);
 void resolveLU(Tridiag *sl, real_t *x);
-// real_t resolveLU(Tridiag *sl, real_t *x);
+void refazRX(Tridiag *sl, EDo *edo);
 
 #endif // __EQDIFF_H__
