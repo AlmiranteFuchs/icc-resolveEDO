@@ -3,8 +3,11 @@
 #include <fenv.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <likwid.h>
 
-int main() {
+int main()
+{
+  LIKWID_MARKER_INIT;
   fesetround(FE_DOWNWARD);
 
   int n = 0; // Pontos internos da malha
@@ -29,10 +32,13 @@ int main() {
   real_t *x = (real_t *)calloc(tri->n, sizeof(real_t)); // Vetor solução
 
   // Fatora LU para o processamento
+  LIKWID_MARKER_START("fatoraLU");
   fatoraLU(tri);
+  LIKWID_MARKER_END("fatoraLU");
 
   // Processamento
-  do {
+  do
+  {
     // Valores atualizados depois da primeira iteração
     edo_test->r1 = r1;
     edo_test->r2 = r2;
@@ -49,7 +55,8 @@ int main() {
 
     printf("\n");
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
       printf(FORMAT, x[i]);
     }
     printf("\n");
@@ -57,4 +64,5 @@ int main() {
     printf("\n\n");
 
   } while (scanf("%lf %lf %lf %lf", &r1, &r2, &r3, &r4) == 4);
+  LIKWID_MARKER_CLOSE;
 }
