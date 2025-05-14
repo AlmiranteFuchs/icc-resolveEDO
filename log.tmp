@@ -1,0 +1,63 @@
+STRUCT,Info,3
+CPU name:,AMD FX(tm)-6300 Six-Core Processor,
+CPU type:,AMD Interlagos processor,
+CPU clock:,3.499907486 GHz,
+TABLE,Region fatoraLU,Group 1 Raw,FLOPS_DP,4
+Region Info,Core 0,
+RDTSC Runtime [s],0.000001,
+call count,1,
+Event,Counter,Core 0
+RETIRED_INSTRUCTIONS,PMC0,5378
+CPU_CLOCKS_UNHALTED,PMC1,31689
+RETIRED_UOPS,PMC2,7116
+RETIRED_FLOPS_DOUBLE_ALL,PMC3,20
+TABLE,Region fatoraLU,Group 1 Metric,FLOPS_DP,6
+Metric,Core 0,
+Runtime (RDTSC) [s],9.467940e-07,
+Runtime unhalted [s],9.054239e-06,
+DP MFLOP/s,21.1239,
+CPI,5.8923,
+CPI (based on uops),4.4532,
+IPC,0.1697,
+STRUCT,Info,3
+CPU name:,AMD FX(tm)-6300 Six-Core Processor,
+CPU type:,AMD Interlagos processor,
+CPU clock:,3.499907486 GHz,
+TABLE,Region resolveEdo0,Group 1 Raw,FLOPS_DP,4
+Region Info,Core 0,
+RDTSC Runtime [s],0.000002,
+call count,1,
+Event,Counter,Core 0
+RETIRED_INSTRUCTIONS,PMC0,5697
+CPU_CLOCKS_UNHALTED,PMC1,31008
+RETIRED_UOPS,PMC2,7471
+RETIRED_FLOPS_DOUBLE_ALL,PMC3,35
+TABLE,Region resolveEdo0,Group 1 Metric,FLOPS_DP,6
+Metric,Core 0,
+Runtime (RDTSC) [s],1.505328e-06,
+Runtime unhalted [s],8.859663e-06,
+DP MFLOP/s,23.2507,
+CPI,5.4429,
+CPI (based on uops),4.1504,
+IPC,0.1837,
+STRUCT,Info,3
+CPU name:,AMD FX(tm)-6300 Six-Core Processor,
+CPU type:,AMD Interlagos processor,
+CPU clock:,3.499907486 GHz,
+TABLE,Region resolveEdo1,Group 1 Raw,FLOPS_DP,4
+Region Info,Core 0,
+RDTSC Runtime [s],0.000000,
+call count,1,
+Event,Counter,Core 0
+RETIRED_INSTRUCTIONS,PMC0,4962
+CPU_CLOCKS_UNHALTED,PMC1,27146
+RETIRED_UOPS,PMC2,6579
+RETIRED_FLOPS_DOUBLE_ALL,PMC3,35
+TABLE,Region resolveEdo1,Group 1 Metric,FLOPS_DP,6
+Metric,Core 0,
+Runtime (RDTSC) [s],4.582551e-07,
+Runtime unhalted [s],7.756205e-06,
+DP MFLOP/s,76.3767,
+CPI,5.4708,
+CPI (based on uops),4.1262,
+IPC,0.1828,
