@@ -4,7 +4,7 @@ OBJS = resolveEDO.o edo.o utils.o
 LIKWID_HOME = /home/soft/likwid
 
 # Compilador
-CC = gcc
+CC = gcc -Wall
 CFLAGS = -O0 -mavx2 -march=native -I$(LIKWID_HOME)/include -DLIKWID_PERFMON
 LFLAGS = -lm -L$(LIKWID_HOME)/lib -llikwid
 
