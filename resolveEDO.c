@@ -72,5 +72,9 @@ int main()
     j++;
 
   } while (scanf("%lf %lf %lf %lf", &r1, &r2, &r3, &r4) == 4);
+
+  freeTridiag(tri);
+  freeEdo(edo_test);
+  free(x);
   LIKWID_MARKER_CLOSE;
 }

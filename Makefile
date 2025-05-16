@@ -9,7 +9,7 @@ CFLAGS = -O0 -mavx2 -march=native -I$(LIKWID_HOME)/include -DLIKWID_PERFMON
 LFLAGS = -lm -L$(LIKWID_HOME)/lib -llikwid
 
 # Lista de arquivos para distribuição
-DISTFILES = *.c *.h LEIAME* Makefile edos.dat
+DISTFILES = *.c *.h LEIAME* Makefile edos.dat script.sh
 DISTDIR = ${USER}
 
 .PHONY: clean purge dist all

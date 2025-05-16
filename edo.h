@@ -22,6 +22,9 @@ typedef struct {
 // Funções auxiliares
 
 Tridiag *genTridiag(EDo *edoeq);
+void freeTridiag(Tridiag* tri);
+void freeEdo(EDo* edo);
+
 void prnEDOsl(EDo *edoeq);
 void prnTridiagSystem(Tridiag *sl);
 EDo *genEDo(int n, real_t a, real_t b, real_t ya, real_t yb, real_t p, real_t q,

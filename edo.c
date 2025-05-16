@@ -5,13 +5,15 @@
 #include "edo.h"
 #include "utils.h"
 
-void refazRX(Tridiag *sl, EDo *edo) {
+void refazRX(Tridiag *sl, EDo *edo)
+{
   real_t x, rx;
   int n = edo->n;
 
   real_t h = (edo->b - edo->a) / (n + 1);
 
-  for (int i = 0; i < n; ++i) {
+  for (int i = 0; i < n; ++i)
+  {
     x = edo->a + (i + 1) * h;
     rx = edo->r1 * x + edo->r2 * x * x + edo->r3 * cos(x) + edo->r4 * exp(x);
 
@@ -22,7 +24,8 @@ void refazRX(Tridiag *sl, EDo *edo) {
   sl->B[n - 1] -= edo->yb * (1 + h * edo->p / 2.0);
 }
 
-Tridiag *genTridiag(EDo *edo) {
+Tridiag *genTridiag(EDo *edo)
+{
   Tridiag *sl;
   real_t x, rx;
   int n = edo->n;
@@ -37,7 +40,8 @@ Tridiag *genTridiag(EDo *edo) {
 
   real_t h = (edo->b - edo->a) / (n + 1);
 
-  for (int i = 0; i < n; ++i) {
+  for (int i = 0; i < n; ++i)
+  {
     x = edo->a + (i + 1) * h;
     rx = edo->r1 * x + edo->r2 * x * x + edo->r3 * cos(x) + edo->r4 * exp(x);
 
@@ -54,14 +58,16 @@ Tridiag *genTridiag(EDo *edo) {
 }
 
 // Exibe SL na saída padrão
-void prnEDOsl(EDo *edoeq) {
+void prnEDOsl(EDo *edoeq)
+{
   int n = edoeq->n, i, j;
   real_t x, b, d, di, ds, rx;
   real_t h = (edoeq->b - edoeq->a) / (n + 1);
 
   printf("%d\n", n);
 
-  for (i = 0; i < n; ++i) {
+  for (i = 0; i < n; ++i)
+  {
     x = edoeq->a + (i + 1) * h;
     rx = edoeq->r1 * x + edoeq->r2 * x * x + edoeq->r3 * cos(x) +
          edoeq->r4 * exp(x);
@@ -71,7 +77,8 @@ void prnEDOsl(EDo *edoeq) {
     d = -2 + h * h * edoeq->q;
     ds = 1 + h * edoeq->p / 2.0;
 
-    for (j = 0; j < n; ++j) {
+    for (j = 0; j < n; ++j)
+    {
       if (i == j)
         printf(FORMAT, d);
       else if (j == i - 1 && i)
@@ -94,10 +101,13 @@ void prnEDOsl(EDo *edoeq) {
   }
 }
 
-void prnTridiagSystem(Tridiag *sl) {
+void prnTridiagSystem(Tridiag *sl)
+{
   int i, j;
-  for (i = 0; i < sl->n; i++) {
-    for (j = 0; j < sl->n; j++) {
+  for (i = 0; i < sl->n; i++)
+  {
+    for (j = 0; j < sl->n; j++)
+    {
       if (j == i)
         printf(FORMAT, sl->D[i]);
       else if (j == i - 1 && i > 0)
@@ -115,11 +125,13 @@ void prnTridiagSystem(Tridiag *sl) {
 }
 
 EDo *genEDo(int n, real_t a, real_t b, real_t ya, real_t yb, real_t p, real_t q,
-            real_t r1, real_t r2, real_t r3, real_t r4) {
+            real_t r1, real_t r2, real_t r3, real_t r4)
+{
 
   EDo *edo = (EDo *)malloc(sizeof(EDo));
 
-  if (edo == NULL) {
+  if (edo == NULL)
+  {
     fprintf(stderr, "Erro ao alocar memória para EDo.\n");
     exit(EXIT_FAILURE);
   }
@@ -139,10 +151,12 @@ EDo *genEDo(int n, real_t a, real_t b, real_t ya, real_t yb, real_t p, real_t q,
   return edo;
 }
 
-void fatoraLU(Tridiag *sl) {
+void fatoraLU(Tridiag *sl)
+{
   // Fatora matriz tridiagonal A em LU, com L armazenada em Di (subdiagonal)
   // e U armazenada em D (diagonal) e Ds (superdiagonal)
-  for (int i = 0; i < sl->n - 1; i++) {
+  for (int i = 0; i < sl->n - 1; i++)
+  {
     real_t m = sl->Di[i] / sl->D[i];
 
     sl->Di[i] = m;
@@ -150,16 +164,33 @@ void fatoraLU(Tridiag *sl) {
   }
 }
 
-void resolveLU(Tridiag *sl, real_t *x) {
+void resolveLU(Tridiag *sl, real_t *x)
+{
 
   // Substituição Direta: resolver Ly=b
-  for (int i = 0; i < sl->n - 1; i++) {
+  for (int i = 0; i < sl->n - 1; i++)
+  {
     sl->B[i + 1] -= sl->B[i] * sl->Di[i];
   }
 
   // Substituição Retroativa: resolver Ux=yU
   x[sl->n - 1] = (sl->B[sl->n - 1]) / sl->D[sl->n - 1];
-  for (int i = sl->n - 2; i >= 0; --i) {
+  for (int i = sl->n - 2; i >= 0; --i)
+  {
     x[i] = (sl->B[i] - sl->Ds[i] * x[i + 1]) / sl->D[i];
   }
+}
+
+void freeEdo(EDo *edo)
+{
+  free(edo);
+}
+
+void freeTridiag(Tridiag *tri)
+{
+  free(tri->D);
+  free(tri->Di);
+  free(tri->Ds);
+  free(tri->B);
+  free(tri);
 }
