@@ -1,0 +1,39 @@
+LEIAME - Resolução Numérica de EDOs via Fatoração LU de Matriz Tridiagonal
+
+Autor: Efi Fuchs — 20211775
+# Objetivo do Programa
+
+Este programa resolve uma Equação Diferencial Ordinária (EDO) de segunda ordem da forma:
+y′′(x)+p⋅y′(x)+q⋅y(x)=r(x)
+
+
+no intervalo [a,b][a,b] com condições de contorno:
+y(a)=ya e y(b)=yb
+
+A função r(x)r(x) é definida como uma combinação linear dos termos:
+r(x)=r1⋅x+r2⋅x2+r3⋅cos⁡(x)+r4⋅exp⁡(x)
+
+# Como o programa funciona
+    * Discretização: A equação diferencial é transformada em um sistema linear tridiagonal através de diferenças finitas centradas.
+    * Fatoração LU: O sistema linear tridiagonal é fatorado em LU. A subdiagonal (L) é armazenada em Di e a diagonal e superdiagonal (U) em D e Ds, respectivamente.
+    * Resolução: O sistema é resolvido usando substituições direta e retroativa.
+    * Vários r(x)r(x): O programa aceita múltiplas entradas de coeficientes r1,r2,r3,r4r1​,r2​,r3​,r4​, reutilizando a fatoração LU para acelerar a solução.
+    * Medição de tempo: O tempo de resolução de cada sistema é medido com timestamp() e anotado com a biblioteca LIKWID.
+
+# Limitações do Programa
+    * Singularidade: Se a matriz gerada for singular (por exemplo, se algum elemento da diagonal principal for zero), a fatoração LU irá falhar por divisão por zero.
+    * Tamanho fixo do marcador LIKWID: O título dos marcadores resolveEdo%d tem tamanho fixo de 20 caracteres. Iterações além de resolveEdo999999 podem truncar esse nome.
+
+# Execução com Script
+    * Limpa e recompila o projeto silenciosamente (make purge && make).
+    * Fixa a frequência do CPU em modo "performance" para evitar flutuações no clock e melhorar a repetibilidade das medições.
+    * Executa o programa resolveEDO com o utilitário likwid-perfctr para medir operações de ponto flutuante com precisão dupla (grupo FLOPS_DP).
+    * Redireciona a entrada do arquivo edos.dat e salva a saída em resolveEDO_saida.txt.
+    * Extrai a métrica FP_ARITH_INST_RETIRED_SCALAR_DOUBLE do relatório do LIKWID para flops_dp.txt,
+    * Restaura a política original de frequência da CPU para powersave.
+
+# Arquivos esperados
+    * edos.dat: Arquivo contendo a entrada do programa
+
+# Observações
+    * Fora do DINF o comando de performance pode falhar, atente a isso.

@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <likwid.h>
 
+/*
+* Author: Efi Fuchs 20211775
+*/
+
 int main()
 {
   LIKWID_MARKER_INIT;
